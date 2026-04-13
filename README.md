@@ -1,5 +1,5 @@
 # prsnt-cms
-publications for prnst-cms
+publications for prsnt-cms
 
 Quick Start
 Clone and Install:
