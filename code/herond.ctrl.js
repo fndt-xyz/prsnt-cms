@@ -1,121 +1,119 @@
 /**
- * Herond Slider Controller
- * Manages the slide transitions, dynamic label generation, 
- * and progress bar indicators.
+ * Herond Slider Controller - v0.04
+ * Supports Click, Navigation, Mouse Drag, and Touch Swipe.
+ * Integrated with % based infinite loop logic.
  */
 
 function initHeroSlider() {
-    // 1. Select the newly injected elements
     const track = document.getElementById('hero-track');
     const labelWrap = document.getElementById('hero-labels');
     const barWrap = document.getElementById('hero-bars');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     
-    // Safety check: if the HTML hasn't loaded properly, exit to avoid errors
-    if (!track || !labelWrap || !barWrap) {
-        console.error("Herond Controller: Required DOM elements not found.");
-        return;
-    }
+    if (!track || !labelWrap || !barWrap) return;
 
-    // 2. Configuration: Labels for your slides
-    const slides = [
-        { label: "sld_01" },
-        { label: "sld_02" },
-        { label: "sld_03" }
-    ];
-
+    const slides = [ { label: "sld_01" }, { label: "sld_02" }, { label: "sld_03" } ];
     let current = 0;
     const total = slides.length;
 
+    // --- DRAG STATE ---
+    let startX = 0;
+    let isDragging = false;
+    const threshold = 50; // "Slight drag" (50px) to trigger move
+
     /**
-     * Updates the visual state of the slider
+     * core move logic - handles the infinite loop
      */
     function move(index) {
-        // Handle infinite loop logic
-        current = (index + total) % total;
-        
-        // Move the track
+        current = (index + total) % total; // The "Circle Back" logic
+        track.style.transition = "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
         track.style.transform = `translateX(-${current * 100}%)`;
+        updateUI();
+    }
 
-        // Update Text Labels (Controller 02)
-        const lbls = labelWrap.querySelectorAll('button');
-        lbls.forEach((l, i) => {
-            if (i === current) {
-                l.style.color = "#1e293b"; // slate-800
-                l.style.opacity = "1";
-                l.style.transform = "scale(1.1)";
-            } else {
-                l.style.color = "#94a3b8"; // slate-400
-                l.style.opacity = "0.6";
-                l.style.transform = "scale(1)";
-            }
+    function updateUI() {
+        // Sync Labels
+        labelWrap.querySelectorAll('button').forEach((l, i) => {
+            l.style.color = (i === current) ? "#1e293b" : "#94a3b8";
+            l.style.opacity = (i === current) ? "1" : "0.6";
+            l.style.transform = (i === current) ? "scale(1.1)" : "scale(1)";
         });
-
-        // Update Progress Bars (Controller 01)
-        const bars = barWrap.querySelectorAll('button');
-        bars.forEach((b, i) => {
-            if (i === current) {
-                b.style.width = "32px";
-                b.style.backgroundColor = "#475569"; // slate-600
-                b.style.opacity = "1";
-            } else {
-                b.style.width = "12px";
-                b.style.backgroundColor = "#cbd5e1"; // slate-300
-                b.style.opacity = "0.5";
-            }
+        // Sync Progress Bars
+        barWrap.querySelectorAll('button').forEach((b, i) => {
+            b.style.width = (i === current) ? "32px" : "12px";
+            b.style.backgroundColor = (i === current) ? "#475569" : "#cbd5e1";
+            b.style.opacity = (i === current) ? "1" : "0.5";
         });
     }
 
-    // 3. Generate Control Elements
+    // --- GESTURE HANDLERS ---
+
+    const handleStart = (e) => {
+        isDragging = true;
+        startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+        track.style.transition = "none"; // Stop transition for instant feel
+    };
+
+    const handleEnd = (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        
+        const endX = e.type.includes('mouse') ? e.pageX : e.changedTouches[0].clientX;
+        const diff = startX - endX;
+
+        // Logic: If drag > threshold, use the move() modulo logic to circle back
+        if (Math.abs(diff) > threshold) {
+            if (diff > 0) {
+                move(current + 1); // Swiped Left -> Go Next
+            } else {
+                move(current - 1); // Swiped Right -> Go Prev
+            }
+        } else {
+            move(current); // Snap back if drag was too small
+        }
+    };
+
+    // Prevent default browser image dragging
+    track.addEventListener('dragstart', (e) => e.preventDefault());
+
+    // --- EVENT LISTENERS ---
+
+    // Mouse
+    track.addEventListener('mousedown', handleStart);
+    window.addEventListener('mouseup', handleEnd); // Window ensures it catches release outside track
+
+    // Touch
+    track.addEventListener('touchstart', handleStart, { passive: true });
+    track.addEventListener('touchend', handleEnd);
+
+    // --- UI GENERATOR ---
     labelWrap.innerHTML = '';
     barWrap.innerHTML = '';
-
     slides.forEach((s, i) => {
-        // Create Text Label
         const lbl = document.createElement('button');
-        // Applying classes from your element.css/tailwind-like setup
         lbl.className = "text-xs font-bold tracking-widest lowercase cursor-pointer transition-all duration-300";
         lbl.innerText = s.label;
-        lbl.style.border = "none";
-        lbl.style.background = "none";
-        lbl.style.padding = "0 4px";
-        lbl.onclick = (e) => { e.preventDefault(); move(i); };
+        lbl.style.cssText = "border:none; background:none; padding: 0 4px;";
+        lbl.onclick = () => move(i);
         labelWrap.appendChild(lbl);
 
-        // Add Separator |
         if (i < total - 1) {
             const sep = document.createElement('span');
             sep.innerText = "|";
-            sep.className = "select-none";
             sep.style.color = "#e2e8f0";
             labelWrap.appendChild(sep);
         }
 
-        // Create Progress Bar
         const bar = document.createElement('button');
         bar.className = "h-1.5 rounded-full cursor-pointer transition-all duration-500";
-        bar.style.border = "none";
-        bar.style.padding = "0";
-        bar.style.margin = "0 4px";
-        bar.onclick = (e) => { e.preventDefault(); move(i); };
+        bar.style.cssText = "border:none; padding:0; margin:0 4px;";
+        bar.onclick = () => move(i);
         barWrap.appendChild(bar);
     });
 
-    // 4. Attach Arrow Listeners
-    if (prevBtn) {
-        prevBtn.onclick = (e) => {
-            e.preventDefault();
-            move(current - 1);
-        };
-    }
-    if (nextBtn) {
-        nextBtn.onclick = (e) => {
-            e.preventDefault();
-            move(current + 1);
-        };
-    }
+    if (prevBtn) prevBtn.onclick = () => move(current - 1);
+    if (nextBtn) nextBtn.onclick = () => move(current + 1);
 
-    // 5. Initialize First Slide
     move(0);
 }

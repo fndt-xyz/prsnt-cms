@@ -1,14 +1,18 @@
-/* --- BARND CAROUSEL --- */
+/* * BARND CAROUSEL MODULE - v0.04
+ * Logic: Horizontal scrollable track with flexbox containment.
+ * Design: Minimalist card-based carousel for brand/project icons.
+ */
 
 .carousel-wrapper {
     position: relative;
     width: 100%;
     max-width: 100%; 
-    overflow: hidden; 
+    overflow: hidden; /* Prevents internal track from expanding page width */
     padding: 1rem 0;
     box-sizing: border-box;
 }
 
+/* --- 1. NAVIGATION CONTROL --- */
 .carousel-nav-container {
     display: flex;
     justify-content: flex-end;
@@ -22,37 +26,44 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: white;
+    background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 4px;
     cursor: pointer;
     color: #64748b;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .carousel-nav-btn:hover {
     background: #f8fafc;
-    color: #1e293b;
+    color: #0f172a;
     border-color: #cbd5e1;
 }
 
+/* --- 2. SCROLLABLE TRACK --- */
 .carousel-container {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; /* Forces items into a single horizontal line */
     gap: 1.5rem;
-    padding-bottom: 1.5rem; /* Space for the scrollbar */
+    padding-bottom: 1.5rem; /* Margin for scrollbar visibility */
     
+    /* PHYSICS & CONTAINMENT */
     overflow-x: auto; 
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
+    overflow-y: hidden;
+    width: 100%;
+    max-width: 100%;
     
-    /* SHOW SCROLLBAR */
+    /* Native Momentum Scrolling */
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; 
+    
+    /* Firefox Scrollbar Styling */
     scrollbar-width: thin; 
     scrollbar-color: #cbd5e1 #f1f5f9;
 }
 
-/* Custom Scrollbar for Chrome/Safari/Edge */
+/* Webkit Scrollbar Logic (Chrome/Safari/Edge) */
 .carousel-container::-webkit-scrollbar {
     height: 6px;
     display: block;
@@ -66,23 +77,24 @@
 .carousel-container::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 10px;
-    transition: background 0.3s;
 }
 
 .carousel-container::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
 }
 
+/* --- 3. CAROUSEL ITEMS --- */
 .carousel-item {
+    /* flex-shrink: 0 is critical to prevent browser from squishing items */
     flex: 0 0 200px; 
     width: 200px;
-    background: white;
+    background: #ffffff;
     border: 1px solid #f1f5f9;
     padding: 1rem;
-    transition: all 0.3s ease;
-    cursor: grab; /* Shows the user they can pull it */
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    cursor: grab;
     box-sizing: border-box;
-    user-select: none; /* Prevents text highlighting while dragging */
+    user-select: none;
 }
 
 .carousel-item:active {
@@ -95,7 +107,7 @@
     object-fit: contain;
     border-radius: 8px;
     border: 1px solid #f1f5f9;
-    pointer-events: none; /* Prevents image ghosting during drag */
+    pointer-events: none; /* Disables drag-ghosting on images */
 }
 
 .carousel-label {
@@ -106,4 +118,41 @@
     letter-spacing: 0.1em;
     color: #94a3b8;
     text-align: center;
+}
+
+
+
+/* --- MOBILE FORCE-CONTAINMENT --- */
+@media screen and (max-width: 768px) {
+    /* 1. Force the wrapper to lock to the screen width */
+    .carousel-wrapper {
+        width: 100vw; 
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        overflow: hidden;
+    }
+
+    /* 2. Reset the container to ensure it doesn't push the parent */
+    .carousel-container {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0; /* CRITICAL: Allows flex child to be smaller than content */
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        gap: 1rem;
+        padding-left: 1.25rem; /* Matches your global mobile padding */
+        padding-right: 1.25rem;
+        box-sizing: border-box;
+    }
+
+    .carousel-item {
+        flex: 0 0 160px !important; /* Forces items to stay 160px and overflow */
+        width: 160px !important;
+        min-width: 160px;
+    }
 }
