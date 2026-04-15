@@ -1,8 +1,8 @@
 # prsnt-cms
 publications for prsnt-cms
 
-Quick Start
-Clone and Install:
+# quick start
+clone and install:
 
 ```bash
 
