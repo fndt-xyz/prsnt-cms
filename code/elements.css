@@ -1,3 +1,5 @@
+/* app/code/element.css */
+
 /* Image Grid Container */
 .img-row-triple {
     display: flex;
@@ -33,3 +35,5 @@
         justify-content: center;
     }
 }
+
+

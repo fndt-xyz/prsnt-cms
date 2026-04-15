@@ -1,0 +1,109 @@
+/* --- BARND CAROUSEL --- */
+
+.carousel-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100%; 
+    overflow: hidden; 
+    padding: 1rem 0;
+    box-sizing: border-box;
+}
+
+.carousel-nav-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.carousel-nav-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #64748b;
+    transition: all 0.2s;
+}
+
+.carousel-nav-btn:hover {
+    background: #f8fafc;
+    color: #1e293b;
+    border-color: #cbd5e1;
+}
+
+.carousel-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem; /* Space for the scrollbar */
+    
+    overflow-x: auto; 
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    
+    /* SHOW SCROLLBAR */
+    scrollbar-width: thin; 
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+/* Custom Scrollbar for Chrome/Safari/Edge */
+.carousel-container::-webkit-scrollbar {
+    height: 6px;
+    display: block;
+}
+
+.carousel-container::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.carousel-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.carousel-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.carousel-item {
+    flex: 0 0 200px; 
+    width: 200px;
+    background: white;
+    border: 1px solid #f1f5f9;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    cursor: grab; /* Shows the user they can pull it */
+    box-sizing: border-box;
+    user-select: none; /* Prevents text highlighting while dragging */
+}
+
+.carousel-item:active {
+    cursor: grabbing;
+}
+
+.carousel-item img {
+    width: 100%;
+    aspect-ratio: 240/180;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid #f1f5f9;
+    pointer-events: none; /* Prevents image ghosting during drag */
+}
+
+.carousel-label {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: lowercase;
+    letter-spacing: 0.1em;
+    color: #94a3b8;
+    text-align: center;
+}

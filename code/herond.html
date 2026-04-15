@@ -1,0 +1,35 @@
+<!--
+code/herond.html
+-->
+
+<link rel="stylesheet" href="code/herond.css">
+<script src="code/herond.js"></script>
+<div class="hr-viewport">
+    <div class="hr-track" id="hero-track">
+        <div class="hr-item">
+            <div class="sld-box-generic"><span class="sld-label-placeholder">sld_01</span></div>
+        </div>
+        <div class="hr-item">
+            <div class="sld-box-generic"><span class="sld-label-placeholder">sld_02</span></div>
+        </div>
+        <div class="hr-item">
+            <div class="sld-box-generic"><span class="sld-label-placeholder">sld_03</span></div>
+        </div>
+    </div>
+
+    <button class="slider-arrow arrow-left" id="prevBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <button class="slider-arrow arrow-right" id="nextBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+
+    <div class="hr-ctrl-container">
+        <div id="hero-labels" class="ctrl-row"></div> <div id="hero-bars" class="ctrl-row"></div>   </div>
+</div>
+
+<script>
+    if (typeof initHeroSlider === 'function') {
+        initHeroSlider();
+    }
+</script>

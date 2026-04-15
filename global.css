@@ -16,6 +16,13 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+/* Global Image Reset */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
 /* 3. NAVIGATION BAR */
 .nav-ft-container {
     width: 100%;
@@ -106,16 +113,32 @@ a.logo-text {
 }
 
 @media (min-width: 768px) {
-    .grid-two-one { grid-template-columns: 7fr 2fr; }
+    /* minmax(0, 1fr) allows horizontal components to scroll without breaking grid */
+    .grid-two-one { grid-template-columns: minmax(0, 7fr) 2fr; }
 }
 
 /* 7. CARDS & TYPOGRAPHY */
 .view-card {
-    padding: 1.5rem 1.1rem 1.1rem; /* Desktop Padding */
+    padding: 1.5rem 1.1rem 1.1rem;
     border: 1px solid #e2e8f0;
     border-radius: 1rem;
     background: white;
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    margin-bottom: 1rem;
+}
+
+/* Flush Variant for full-width components (Hero/Carousel) */
+.view-card.flush {
+    padding-left: 0;
+    padding-right: 0;
+    overflow: hidden;
+}
+
+.view-card.flush .view-title,
+.view-card.flush .view-content,
+.view-card.flush .title-sep {
+    margin-left: 1.1rem;
+    margin-right: 1.1rem;
 }
 
 .view-title {
@@ -134,7 +157,6 @@ hr.title-sep {
     margin-top: 0;        
     margin-bottom: 6px;
     display: block;
-    width: 100%;
 }
 
 .view-content {
@@ -149,11 +171,9 @@ hr.title-sep {
 .view-content a {
     color: inherit !important;
     text-decoration: none !important;
-    /*font-weight: normal !important;  Forces bold to go away */
     transition: color 0.2s ease;
 }
 
-/* Optional: Slight color change on hover so you know it's clickable */
 .view-content a:hover {
     color: #64748b !important;
 }
@@ -194,24 +214,26 @@ hr.title-sep {
 
 /* 10. MOBILE ALIGNMENT FIXES */
 @media (max-width: 767px) {
-    /* Reduce the 'useless space' on the left of the card */
     .view-card {
         padding-left: 1.25rem;
         padding-right: 1.25rem;
     }
 
-    /* Match the sidebar links exactly to the card text above */
+    /* Increase hit area for mobile navigation */
+    .nav-link, .right-col-links a {
+        padding-top: 0.85rem;
+        padding-bottom: 0.85rem;
+    }
+
     .right-col-links a {
         padding-left: 1.25rem !important;
         padding-right: 1.25rem !important;
     }
 
-    /* Match the sidebar header */
     .right-col-link-h2 {
         padding-left: 1.25rem;
     }
 
-    /* Adjust main container to give more screen real estate */
     .view-container {
         padding: 1rem;
     }
@@ -248,18 +270,12 @@ hr.title-sep {
     font-weight: normal;
 }
 
-/* Removes the heavy default indent and aligns bullets with the paragraph text */
 .list-flush {
-    padding-left: 1.25rem; /* Aligns the bullet point with the start of the text */
+    padding-left: 1.25rem;
     margin-left: 0;
     list-style-position: outside;
 }
 
-.list-flush li {
-    /*margin-bottom: 0.5rem;  Adds a little breathing room between items */
-}
-
-/* Optional: Specifically for mobile to ensure it doesn't drift */
 @media (max-width: 767px) {
     .list-flush {
         padding-left: 1rem; 

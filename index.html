@@ -1,3 +1,6 @@
+<!--
+index.html
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +11,9 @@
     <link rel="icon" type="image/png" href="favicon.png">
     
     <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="code/element.css">
+    <script src="code/herond.ctrl.js"></script>
+    <script src="code/barnd.ctrl.js"></script>
 </head>
 <body class="antialiased">
 
@@ -28,6 +34,12 @@
                             </div>
                     </div>
                 </section>
+                
+                <section class="view-card">
+                    <div id="hero-placeholder"></div>
+                    <div id="row-placeholder"></div>
+                    <div id="carousel-placeholder"></div>
+                </section>
             </div>
 
             <div class="right-col">
@@ -41,29 +53,44 @@
     <div id="footer-placeholder"></div>
 
     <script>
+        // A robust loader that returns a promise
         async function loadComponent(id, file) {
             const element = document.getElementById(id);
-            if (!element) return;
+            if (!element) return false;
             
-            // Only load if the element is empty (allows for manual overrides)
-            if (element.innerHTML.trim() === "") {
-                try {
-                    const response = await fetch(file);
-                    if (response.ok) {
-                        const data = await response.text();
-                        element.innerHTML = data;
-                    }
-                } catch (error) {
-                    console.error("Error loading component:", file, error);
-                }
+            try {
+                const response = await fetch(file);
+                if (!response.ok) throw new Error(`Failed to load ${file}`);
+                const data = await response.text();
+                element.innerHTML = data;
+                return true; 
+            } catch (error) {
+                console.error("Component Error:", error);
+                return false;
             }
         }
 
-        // Initialize components
-        document.addEventListener("DOMContentLoaded", () => {
+        // The "Timing" Logic
+			document.addEventListener("DOMContentLoaded", async () => {
+            // 1. Load static parts (non-blocking)
             loadComponent('navbar-placeholder', 'navbar.html');
             loadComponent('footer-placeholder', 'footer.html');
             loadComponent('sidebar-placeholder', 'rght-clmn.html');
+
+            // 2. Load the Hero Slider (Sequential)
+            const heroIsReady = await loadComponent('hero-placeholder', 'code/herond.html');
+            if (heroIsReady && typeof initHeroSlider === 'function') {
+                initHeroSlider();
+            }
+            
+            // 3. Load the Custom Triple Row (Added await for safety)
+            await loadComponent('row-placeholder', 'code/row01.html');
+            
+            // 4. Load the Barnd Carousel (Sequential)
+            const barndIsReady = await loadComponent('carousel-placeholder', 'code/barnd.html');
+            if (barndIsReady && typeof initBarndCarousel === 'function') {
+                initBarndCarousel();
+            }
         });
     </script>
 </body>
