@@ -7,9 +7,9 @@
     
     <link rel="stylesheet" href="../../global.css">
     <link rel="stylesheet" href="../../code/element.css">
-    <link rel="stylesheet" href="cntntc.css">
     
-    <script src="frameworks.js"></script>
+    <link rel="stylesheet" href="./cntntc.css">
+    <script src="./frameworks.js"></script>
 </head>
 <body class="antialiased">
 
@@ -52,22 +52,47 @@
     <div id="footer-placeholder"></div>
 
     <script>
+        /**
+         * DIRECTORY SELF-CORRECTION
+         * Fixes Vercel pathing: If visited as /frameworks, redirect to /frameworks/
+         * This ensures relative paths for JS/CSS/Fetch always point to the folder.
+         */
+        (function() {
+            const path = window.location.pathname;
+            if (!path.endsWith('/') && !path.includes('.html')) {
+                window.location.replace(window.location.href + '/');
+            }
+        })();
+
+        /**
+         * Loads shared HTML components (Navbar/Footer)
+         */
         async function loadStaticComponent(id, file) {
             const element = document.getElementById(id);
             if (!element) return;
             try {
                 const response = await fetch(file);
+                if (!response.ok) throw new Error(`Failed to load ${file}`);
                 const data = await response.text();
                 element.innerHTML = data;
-            } catch (error) { console.error("Static Component Error:", error); }
+            } catch (error) { 
+                console.error("Static Component Error:", error); 
+            }
         }
 
+        /**
+         * Initialization Logic
+         */
         document.addEventListener("DOMContentLoaded", async () => {
+            // Load global components
             loadStaticComponent('navbar-placeholder', '../../navbar.html');
             loadStaticComponent('footer-placeholder', '../../footer.html');
 
+            // Initialize the frameworks controller
             if (typeof Frameworks !== 'undefined') {
                 Frameworks.init();
+            } else {
+                console.error("Frameworks Error: frameworks.js failed to load.");
             }
         });
     </script>

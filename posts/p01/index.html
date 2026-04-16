@@ -4,80 +4,64 @@
     <meta charset="UTF-8">
     <title>Presentation | P01</title>
     <script>
-        // --- NEW ACCESS CONTROL FLAG ---
-        // ACC_GRANT: Public mode (no password)
-        // ACC_PWD: Protected mode (standard prompt)
-        const accessMode = "ACC_GRANT"; 
-        const authType = "P01_KEY";
-
-        async function checkAccess() {
-            const hostname = window.location.hostname;
-            const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.');
-
-            // 0. NEW: Bypass logic for public post folder
-            if (accessMode === "ACC_GRANT") {
-                return grantAccess();
-            }
-
-            // 1. If authorized, go straight to content
-            if (isLocal || document.cookie.includes("b_access=granted")) {
-                return grantAccess();
-            }
-
-            // 2. Password Prompt
-            const password = prompt("Please enter password for P01:");
-            if (!password) { window.location.href = "/"; return; }
-
-            try {
-                const resp = await fetch('/api/verify', {
-                    method: 'POST',
-                    body: JSON.stringify({ lookupKey: authType, code: password }),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                const data = await resp.json();
-                if (resp.ok && data.granted) {
-                    grantAccess();
-                } else {
-                    alert("Wrong password.");
-                    window.location.href = "/";
-                }
-            } catch (e) { alert("System Error."); }
-        }
-
-        function grantAccess() {
-    // 1. Set credentials
-    document.cookie = "b_access=granted; path=/; samesite=strict; secure";
-    sessionStorage.setItem('b_access', 'granted');
-
-    const hostname = window.location.hostname;
-    const path = window.location.pathname;
-
-	// 2. Identify the folder dynamically
-    // This grabs the name of the folder containing this index.html
-    const pathSegments = path.split('/').filter(Boolean);
-    const folder = pathSegments[pathSegments.length - 1] || 'p01';
-
-    // 3. Determine if we are at the "Gate" (index) or trying to see a deep file
-    const isAtGate = path.endsWith('/') || path.includes('index') || path.endsWith(folder);
-
-    if (isAtGate) {
-        if (hostname === 'localhost' || hostname === '127.0.0.1') {
-            // LOCALHOST MODE: Use plain relative path for Python server
-            console.log("Localhost redirecting...");
-            window.location.replace("page-00-00-title.html");
-        } else {
-            // VERCEL MODE: Detect if we are in /pg/ or /post/ to keep absolute pathing correct
-            const baseDir = path.includes('/post/') ? 'post' : 'pg';
-            console.log("Remote redirecting to absolute path...");
-            window.location.replace(`/${baseDir}/${folder}/page-00-00-title.html`);
-        }
-    } else {
-        // If they were trying to access a specific file (e.g., .txt), just reload
-        window.location.reload();
-    }
-}
-
-        window.onload = checkAccess;
+			// --- CONFIGURATION ---
+			// Change ONLY these two lines when creating a new protected folder
+			const accessMode = "ACC_GRANT"; // Use "ACC_PWD" to enable password
+			const authKey = "P01_KEY";      // The key the API looks for
+			
+			async function checkAccess() {
+				const hostname = window.location.hostname;
+				const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.');
+			
+				// 1. Bypass logic
+				if (accessMode === "ACC_GRANT" || isLocal || document.cookie.includes("b_access=granted")) {
+					return grantAccess();
+				}
+			
+				// 2. Password Prompt
+				const password = prompt(`Please enter password for ${authKey}:`);
+				if (!password) { window.location.href = "/"; return; }
+			
+				try {
+					const resp = await fetch('/api/verify', {
+						method: 'POST',
+						body: JSON.stringify({ lookupKey: authKey, code: password }),
+						headers: { 'Content-Type': 'application/json' }
+					});
+					const data = await resp.json();
+					if (resp.ok && data.granted) {
+						grantAccess();
+					} else {
+						alert("Invalid Password.");
+						window.location.href = "/";
+					}
+				} catch (e) { alert("System Error."); }
+			}
+			
+			function grantAccess() {
+				// 1. Set credentials
+				document.cookie = "b_access=granted; path=/; samesite=strict; secure";
+				sessionStorage.setItem('b_access', 'granted');
+			
+				/**
+				* UNIVERSAL REDIRECT LOGIC
+				* This logic ensures that no matter what the folder is named,
+				* we stay INSIDE that folder for the redirect.
+				*/
+				const currentUrl = window.location.href;
+				
+				// If the URL doesn't end in a slash and isn't a specific .html file,
+				// the browser needs to be told to treat the current segment as a directory.
+				if (!currentUrl.endsWith('/') && !currentUrl.includes('.html')) {
+					window.location.replace(currentUrl + "/page-00-00-title.html");
+				} else {
+					// If we already have a slash or are on index.html, 
+					// a simple relative path works perfectly.
+					window.location.replace("./page-00-00-title.html");
+				}
+			}
+			
+			window.onload = checkAccess;
     </script>
 </head>
 <body style="background:#0a0a0a; color:#444; font-family:monospace; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
