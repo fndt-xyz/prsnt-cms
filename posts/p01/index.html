@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Presentation | P01</title>
+    <script>
+			// --- CONFIGURATION ---
+			// Change ONLY these two lines when creating a new protected folder
+			// (to gate it on Vercel, also add it to gates.config.js)
+			const accessMode = "ACC_GRANT"; // Use "ACC_PWD" to enable password
+			const authKey = "P01_KEY";      // The key the API looks for
+			
+
+			// Ask the server whether this browser already has a valid login cookie.
+        // (The cookie is HttpOnly, so page scripts cannot read or fake it.)
+        async function hasSession(key) {
+            try {
+                const r = await fetch('/api/verify', {
+                    method: 'POST',
+                    body: JSON.stringify({ lookupKey: key, check: true }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const d = await r.json();
+                return r.ok && d.granted === true;
+            } catch (e) { return false; }
+        }
+
+			async function checkAccess() {
+				const hostname = window.location.hostname;
+				const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.');
+			
+				// 1. Bypass logic
+				if (accessMode === "ACC_GRANT" || isLocal || await hasSession(authKey)) {
+					return grantAccess();
+				}
+			
+				// 2. Password Prompt
+				const password = prompt(`Please enter password for ${authKey}:`);
+				if (!password) { window.location.href = "/"; return; }
+			
+				try {
+					const resp = await fetch('/api/verify', {
+						method: 'POST',
+						body: JSON.stringify({ lookupKey: authKey, code: password }),
+						headers: { 'Content-Type': 'application/json' }
+					});
+					const data = await resp.json();
+					if (resp.ok && data.granted) {
+						grantAccess();
+					} else {
+						alert("Invalid Password.");
+						window.location.href = "/";
+					}
+				} catch (e) { alert("System Error."); }
+			}
+			
+			function grantAccess() {
+				// 1. Mark this tab as unlocked (the real login is the server cookie)
+				sessionStorage.setItem('b_access', 'granted');
+			
+				/**
+				* UNIVERSAL REDIRECT LOGIC
+				* This logic ensures that no matter what the folder is named,
+				* we stay INSIDE that folder for the redirect.
+				*/
+				const currentUrl = window.location.href;
+				
+				// If the URL doesn't end in a slash and isn't a specific .html file,
+				// the browser needs to be told to treat the current segment as a directory.
+				if (!currentUrl.endsWith('/') && !currentUrl.includes('.html')) {
+					window.location.replace(currentUrl + "/page-00-00-title.html");
+				} else {
+					// If we already have a slash or are on index.html, 
+					// a simple relative path works perfectly.
+					window.location.replace("./page-00-00-title.html");
+				}
+			}
+			
+			window.onload = checkAccess;
+    </script>
+</head>
+<body style="background:#0a0a0a; color:#444; font-family:monospace; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
+    <div style="text-align:center;"><p>VERIFYING...</p></div>
+</body>
+</html>

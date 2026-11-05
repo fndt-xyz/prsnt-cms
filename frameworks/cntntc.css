@@ -1,0 +1,139 @@
+/* app/frameworks/cntntc.css */
+
+/* --- 1. CORE LAYOUT & NAVIGATION BAR --- */
+
+/* The main "Bar" container for the arrows */
+.frameworks-nav-bar {
+    display: flex;
+    justify-content: space-between; /* Pushes arrows to the far left and right */
+    align-items: center;
+    background: #f8fafc;           /* slate-50 */
+    border: 1px solid #e2e8f0;     /* slate-200 */
+    border-radius: 12px;
+    padding: 6px 12px;
+    margin-top: 1.5rem;            /* Distance from H1 Title */
+    margin-bottom: 2rem;           /* Distance from Sub-Content */
+}
+
+/* Arrow buttons inside the bar */
+.nav-arrow-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #94a3b8;                /* slate-400 */
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.nav-arrow-btn:hover {
+    color: #475569;                /* slate-600 */
+}
+
+/* --- 2. SUB-CONTENT AREA (Detail View) --- */
+
+.sbcnt-content-area { 
+    margin-top: 1rem;
+    min-height: 200px; 
+}
+
+/* Typography for titles inside the loaded snippets */
+.view-pgttl-text { 
+    font-size: 1.125rem; 
+    font-weight: 500; 
+    color: #1e293b; 
+    text-transform: lowercase; 
+    letter-spacing: -0.025em; 
+}
+
+/* Computer Modern Serif style stack for academic readability */
+.scnt-content-wrapper {
+    font-family: "Computer Modern Serif", "Latin Modern Roman", Georgia, "Times New Roman", serif;
+    max-width: 800px; 
+    margin: 0 auto;
+}
+
+.scnt-content-wrapper p {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+    text-align: justify;
+    color: #333;
+    hyphens: auto;
+}
+
+/* --- 3. SIDEBAR NAVIGATION (Master List) --- */
+
+.right-col-links-style {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+}
+
+/* Framework-specific header to align with the Nav Bar on the left */
+.fright-col-link-h2 {
+    font-size: 12px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: lowercase;
+    letter-spacing: 0.1em;
+    padding: 0.6rem 1rem 0.25rem 1rem; /* Nudged for perfect horizontal alignment */
+}
+
+.link-button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 2.5rem; 
+}
+
+/* Sidebar Button Styling */
+.link-item-btn {
+    text-align: left;
+    font-size: 14px;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    transition: all 0.2s;
+    text-transform: lowercase;
+    font-family: var(--font-lato), sans-serif;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* Active/Inactive States */
+.link-item-btn.inactive {
+    color: #64748b; /* slate-500 */
+}
+
+.link-item-btn.inactive:hover {
+    color: #1e293b; /* slate-800 */
+    background-color: #f8fafc;
+}
+
+.link-item-btn.active {
+    background-color: #f1f5f9; /* slate-100 */
+    color: #0f172a;           /* slate-900 */
+    font-weight: 700;
+    border-color: #e2e8f0;    /* slate-200 */
+}
+
+/* --- 4. RESPONSIVE MEDIA QUERIES --- */
+
+@media screen and (max-width: 768px) {
+    .scnt-content-wrapper p {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    
+    .link-item-btn {
+        font-size: 12px;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .frameworks-nav-bar {
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+    }
+}

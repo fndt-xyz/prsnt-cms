@@ -1,0 +1,31 @@
+# --- Security & Keys ---
+*.key
+mgc.key
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- LBM Simulation / Palabos Outputs ---
+# (Ignore heavy simulation data/binary outputs)
+*.o
+*.out
+/tmp/
+/data/output/
+*.dat
+*.vtm
+*.vti
+
+# --- Node / Next.js (For your upcoming conversion) ---
+node_modules/
+.next/
+out/
+build/
+.vercel
+*.log
+
+# --- OS Specific ---
+.DS_Store
+Thumbs.db
+tree.txt

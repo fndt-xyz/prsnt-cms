@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prsnt-cms | all-pages</title>
+    
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/global.css">
+</head>
+<body class="antialiased">
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="view-container">
+        <div class="grid-two-one">
+            
+            <div class="left-col">
+                <section class="view-card">
+                    <h1 class="view-title">directory</h1>
+                    <hr class="title-sep">
+                    <div class="view-content">
+                        <p>
+                            a complete list of all contents, posts and resources hosted on this webs
+                        </p>
+            
+                        <p>
+                            &gt; <a href="/index.html" class="plain-link">home</a>
+                        </p>
+                        <p>
+                            &gt; <a href="/elements/all-pages.html" target="_self" rel="noopener noreferrer" style="font-weight: 400;">all pages</a>
+                        </p>
+                        <p>
+                            &gt; <a href="/frameworks/index.html" class="plain-link">frameworks</a>
+                        </p>
+                        <p>
+                            &gt; <a href="/contents/page-00-publications.html" class="plain-link">pubs</a>
+                        </p>
+                        <p>
+                            &gt; <a href="/contents/" class="plain-link">contents</a>
+                        </p>
+                        <p>
+                            &gt; <a href="/contents/page-00-01-flow-exmp.html" class="plain-link">flow example</a>
+                        </p>
+                        <p>
+                            &gt; <a href="/contents/page-00-02-formula.html" class="plain-link">formula</a>
+                        </p>
+                        <p>
+                            &gt; <a href="/pg/b02/index.html" class="plain-link">presentation 02</a>
+                        </p>
+                        
+
+                    </div>
+                </section>
+            </div>
+
+            <div class="right-col">
+                <div id="sidebar-placeholder">
+                    </div>
+            </div>
+
+        </div>
+    </main>
+    
+    <div id="footer-placeholder"></div>
+
+    <script>
+        async function loadComponent(id, file) {
+            const element = document.getElementById(id);
+            if (!element) return;
+            
+            if (element.innerHTML.trim() === "") {
+                try {
+                    const response = await fetch(file);
+                    if (response.ok) {
+                        const data = await response.text();
+                        element.innerHTML = data;
+                    }
+                } catch (error) {
+                    console.error("Error loading component:", file, error);
+                }
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadComponent('navbar-placeholder', '/elements/navbar.html');
+            loadComponent('footer-placeholder', '/elements/footer.html');
+            // Changed target to rght-clmn-all.html
+            loadComponent('sidebar-placeholder', '/elements/rght-clmn-all.html');
+        });
+    </script>
+</body>
+</html>

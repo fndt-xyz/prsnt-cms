@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Security Gate | B02</title>
+    <script>
+        const authType = "B02_KEY"; // Change this per folder (must match an env key on Vercel)
+
+
+        // Ask the server whether this browser already has a valid login cookie.
+        // (The cookie is HttpOnly, so page scripts cannot read or fake it.)
+        async function hasSession(key) {
+            try {
+                const r = await fetch('/api/verify', {
+                    method: 'POST',
+                    body: JSON.stringify({ lookupKey: key, check: true }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const d = await r.json();
+                return r.ok && d.granted === true;
+            } catch (e) { return false; }
+        }
+
+        async function checkAccess() {
+            const hostname = window.location.hostname;
+            const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.');
+
+            // 1. If authorized, go straight to content
+            if (isLocal || await hasSession(authType)) {
+                return grantAccess();
+            }
+
+            // 2. Password Prompt
+            const password = prompt(`Please enter password for ${authType}:`);
+            if (!password) { window.location.href = "/"; return; }
+
+            try {
+                const resp = await fetch('/api/verify', {
+                    method: 'POST',
+                    body: JSON.stringify({ lookupKey: authType, code: password }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await resp.json();
+                if (resp.ok && data.granted) {
+                    grantAccess();
+                } else {
+                    alert("Wrong password.");
+                    window.location.href = "/";
+                }
+            } catch (e) { alert("System Error."); }
+        }
+
+        function grantAccess() {
+    // 1. Mark this tab as unlocked (the real login is the server cookie)
+    sessionStorage.setItem('b_access', 'granted');
+
+    const hostname = window.location.hostname;
+    const path = window.location.pathname;
+
+    // 2. Identify the folder dynamically (b01, b02, etc.)
+    // We look for the "bXX" pattern in the current URL path
+    const folderMatch = path.match(/b\d{2}/);
+    const folder = folderMatch ? folderMatch[0] : 'b02'; 
+
+    // 3. Determine if we are at the "Gate" (index) or trying to see a deep file
+    const isAtGate = path.endsWith('/') || path.includes('index') || path.endsWith(folder);
+
+    if (isAtGate) {
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            // LOCALHOST MODE: Use plain relative path for Python server
+            console.log("Localhost redirecting...");
+            window.location.replace("page-00-00-title.html");
+        } else {
+            // VERCEL MODE: Force the absolute path to keep the folder in the URL
+            console.log("Vercel redirecting to absolute path...");
+            window.location.replace(`/pg/${folder}/page-00-00-title.html`);
+        }
+    } else {
+        // If they were trying to access a specific file (e.g., .txt), just reload
+        window.location.reload();
+    }
+}
+
+        window.onload = checkAccess;
+    </script>
+</head>
+<body style="background:#0a0a0a; color:#444; font-family:monospace; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
+    <div style="text-align:center;"><p>VERIFYING...</p></div>
+</body>
+</html>

@@ -1,0 +1,251 @@
+/* local.css - presentation control styles */
+
+/* 1. NAVIGATION & CONTROL */
+.control {
+    margin-top: 60px;
+    font-family: monospace;
+    font-size: 0.8em;
+    color: #888;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.prvnxt {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.prvnxt a {
+    color: #888;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.prvnxt a:hover {
+    color: #171717;
+    font-weight: bold;
+}
+
+.nav-sep {
+    color: #eee;
+    user-select: none;
+}
+
+/* 2. PRESENTATION INTRO (Merged Typography & Layout) */
+.presentation-intro {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 120px;
+    margin: 40px 0;
+    font-family: monospace;
+    font-size: 1.4em;
+    line-height: 1.6;
+}
+
+.pre-intro {
+    width: fit-content;
+    margin-right: 50px;
+}
+
+.selectorx {
+    display: grid;
+    grid-template-columns: repeat(2, 35px);
+    grid-template-rows: repeat(2, 35px);
+    gap: 10px;
+    margin-right: 5px;
+    padding-top: 30px; /* Aligns with monospace text height */
+}
+
+.box-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ddd;
+    background: #fcfcfc;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.box-link:hover {
+    border-color: #171717;
+    background: #fff;
+    box-shadow: 2px 2px 0px #eee;
+}
+
+/* 3. CARDX INTERACTIVE GRID */
+.cardx-container {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
+    gap: 20px;
+    min-height: 450px;
+}
+
+.cardx-col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.cardx-col:first-child {
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.cardx-lf-top, .cardx-lf-btm, .cardx-lf-bttn {
+    text-align: justify;
+    text-justify: inter-word;
+    max-width: 100%;
+    line-height: 1.5;
+}
+
+/* Specific 2-column override for Pard buttons */
+.cardx-lf-bttn .cardx-buttons {
+	display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+/* Consolidated Code Display Logic */
+.cardx-rg-top {
+    flex-grow: 1;
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 10px;
+    white-space: pre; 
+    font-family: monospace;
+    font-size: 0.85em;
+    line-height: 1.2;
+    overflow-x: auto; 
+    display: block;
+    background: transparent; /* Ensures it inherits page color */
+    -webkit-overflow-scrolling: touch;
+}
+
+.cardx-rg-btm {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+
+/* 4. BUTTONS & INTERACTION */
+.cardx-rg-bttn .cardx-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.cardx-buttons button, .cardx-summary button {
+    font-family: monospace;
+    cursor: pointer;
+    background: #fcfcfc;
+    border: 1px solid #ddd;
+    color: #888;
+    transition: all 0.2s;
+    text-transform: lowercase;
+}
+
+.cardx-buttons button { padding: 5px; }
+.cardx-summary button { width: 100%; font-size: 0.75rem; padding: 0; }
+
+.cardx-buttons button:hover, .cardx-summary button:hover {
+    border-color: #171717;
+    color: #171717;
+    background: #fff;
+}
+
+/* 5. SIDEBAR & UTILITY */
+.right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+#sidebar-placeholder-tp:empty, 
+#sidebar-placeholder-bt:empty {
+    display: none;
+}
+
+.side-space {
+    height: 100px;
+    width: 100%;
+    display: block;
+}
+
+/* 6. RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+    .grid-two-one {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    .left-col, .right-col {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .view-container {
+        padding: 1rem 0.5rem !important;
+    }
+
+    .view-card {
+        width: 100% !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        box-sizing: border-box !important;
+    }
+
+    .cardx-container {
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: auto !important;
+        gap: 30px;
+    }
+
+    .cardx-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cardx-buttons button {
+        padding: 12px;
+    }
+
+    .right-col {
+        gap: 20px !important;
+        margin-top: 20px;
+    }
+
+    .presentation-intro {
+        flex-direction: row; 
+    }
+    
+    .selectorx {
+        grid-template-columns: repeat(2, 45px);
+        grid-template-rows: repeat(2, 45px);
+    }
+}
+
+@media (max-width: 400px) {
+    .presentation-intro {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .pre-intro {
+        width: 100%;
+    }
+
+    .selectorx {
+        margin-right: 0;
+        padding-top: 0;
+        justify-content: start;
+    }
+}

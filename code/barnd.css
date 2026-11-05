@@ -1,0 +1,122 @@
+/* * BARND CAROUSEL MODULE - v0.05
+ * Logic: Horizontal scrollable track with flexbox containment.
+ * Design: Minimalist card-based carousel for brand/project icons.
+ */
+
+
+.carousel-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100%; 
+    overflow: hidden; 
+    padding: 1rem 0;
+    box-sizing: border-box;
+}
+
+/* --- 1. NAVIGATION --- */
+.carousel-nav-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+}
+
+.carousel-nav-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #64748b;
+}
+
+/* --- 2. THE TRACK --- */
+.carousel-container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    padding: 0 1rem 1rem 1rem; /* Padding on sides so items don't touch edges */
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin; 
+    scrollbar-color: #cbd5e1 #f8fafc;
+}
+
+/* to hide the scrollbar in Chrome/Safari instead, use:
+   .carousel-container::-webkit-scrollbar { display: none; } */
+
+/* ADDED: Custom Scrollbar Styling for Chrome/Safari/Edge */
+.carousel-container::-webkit-scrollbar {
+    height: 6px; /* Height of the horizontal bar */
+    display: block; /* Ensures it stays visible */
+}
+
+.carousel-container::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.carousel-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1; 
+    border-radius: 10px;
+}
+
+.carousel-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8; 
+}
+
+/* --- 3. ITEMS --- */
+.carousel-item {
+    flex: 0 0 180px; /* Locked width */
+    width: 180px;
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    padding: 0.75rem;
+    border-radius: 8px;
+    box-sizing: border-box;
+    cursor: grab;
+    user-select: none;
+}
+
+.carousel-item img {
+    width: 100%;
+    aspect-ratio: 240/180;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.carousel-label {
+    margin-top: 0.5rem;
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-align: center;
+    text-transform: lowercase;
+}
+
+/* --- MOBILE SPECIFIC --- */
+@media screen and (max-width: 768px) {
+    .carousel-nav-container {
+        padding: 0 0.25rem; /* Matches global.css mobile padding */
+    }
+
+    .carousel-container {
+        padding: 0 0.25rem 1rem 0.25rem; /* Matches global.css mobile padding */
+        gap: 0.75rem;
+    }
+
+    .carousel-item {
+        flex: 0 0 140px; 
+        width: 140px;
+        min-width: 140px; /* Forces it to stay this size and not shrink */
+    }
+}

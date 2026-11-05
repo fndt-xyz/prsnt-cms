@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prsnt-cms | flow example</title>
+    
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="../global.css">
+</head>
+<body class="antialiased">
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="view-container">
+        <div class="grid-two-one">
+            
+            <div class="left-col">
+                <section class="view-card">
+                    <h1 class="view-title">flow example</h1>
+                    <hr class="title-sep">
+
+                    <nav class="breadcrumb">
+                        <div class="crumb-line">
+                            &gt; <a href="/index.html">home</a> &gt; 
+                            <a href="/elements/all-pages.html">all-pages</a> &gt; 
+                            <span class="current">flow example</span>
+                        </div>
+                        
+                        <div class="crumb-line external-link">
+                            &gt; <a href="https://github.com/">exmp</a> &gt; 
+                            <a href="https://github.com/">source</a>
+                        </div>
+                    </nav>
+
+                    <div class="view-content">
+                        <p>
+                            
+                            short description of what this diagram shows.
+                        </p>
+<pre style="line-height: 1.2; font-size: 0.85rem; color: var(--text-color, #333); white-space: pre;">
+   [ INPUT ]
+       |
+       v
+ .-------------------.        .-------------------.
+ | [A] node a        | <----> | [B] node b        |
+ '-------------------'        '-------------------'
+       |
+       v
+   [ OUTPUT ]
+</pre>
+                    </div>
+                    
+                    <div class="view-content">
+						<p style="margin-top: 40px;">mermaid source code (for diagrams.net). draw.io xml: <a href="diagram-00-01-01.txt">diagram-00-01-01.txt</a></p>
+    
+    <pre style="background: #2d2d2d; color: #ccc; padding: 15px; border-radius: 5px; overflow-x: auto; font-family: monospace; white-space: pre-wrap;">
+		<code>
+graph TD
+    In["[ INPUT ]"]
+    A["[A] node a"]
+    B["[B] node b"]
+    Out["[ OUTPUT ]"]
+
+    In --> A
+    A <--> B
+    A --> Out
+		</code>
+	</pre>
+				</div>
+                    
+                </section>
+            </div>
+
+            <div class="right-col">
+                <div id="sidebar-placeholder">
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        async function loadComponent(id, file) {
+            const element = document.getElementById(id);
+            if (!element) return;
+            
+            if (element.innerHTML.trim() === "") {
+                try {
+                    // Added ../ to fetch from the parent directory
+                    const response = await fetch(`../${file}`);
+                    if (response.ok) {
+                        const data = await response.text();
+                        element.innerHTML = data;
+                    }
+                } catch (error) {
+                    console.error("Error loading component:", file, error);
+                }
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadComponent('navbar-placeholder', 'elements/navbar.html');
+            loadComponent('footer-placeholder', 'elements/footer.html');
+            loadComponent('sidebar-placeholder', 'elements/rght-clmn.html');
+        });
+    </script>
+</body>
+</html>

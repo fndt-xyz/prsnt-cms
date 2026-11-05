@@ -1,0 +1,33 @@
+<nav class="nav-ft-container border-b border-slate-50 relative z-50">
+    <div class="inner-wrap nav-inner">
+        <div class="logo-group">
+            <a href="/index.html" class="logo-text">prsnt.</a>
+            <a href="/index.html" target="_self" rel="noopener noreferrer">
+                <img src="/logo_prsnt.png" alt="prsnt-cms" class="logo-img">
+            </a>
+        </div>
+
+        <div class="nav-links-wrap">
+            <a href="/index.html" class="nav-link">home</a>
+
+            <!-- dropdown: parent link + triangle. desktop: hover. phone: tap the triangle (the word still opens the parent page).
+                 to add a dropdown: copy one whole <div class="nav-dd"> block. to remove it: keep only the <a> parent link. -->
+            <div class="nav-dd">
+                <a href="/elements/all-pages.html" class="nav-link nav-dd-parent">all-pages</a><button type="button" class="nav-dd-toggle" aria-label="open submenu" onclick="var d=this.closest('.nav-dd');document.querySelectorAll('.nav-dd.open').forEach(function(o){if(o!==d)o.classList.remove('open')});d.classList.toggle('open')"><span class="nav-dd-caret" aria-hidden="true"></span></button>
+                <div class="nav-dd-menu">
+                    <a href="/contents/page-00-00-example.html" class="nav-link">example</a>
+                    <a href="/contents/page-00-01-flow-exmp.html" class="nav-link">flow example</a>
+                    <a href="/contents/page-00-02-formula.html" class="nav-link">formula</a>
+                </div>
+            </div>
+
+            <div class="nav-dd">
+                <a href="/elements/about.html" class="nav-link nav-dd-parent">about</a><button type="button" class="nav-dd-toggle" aria-label="open submenu" onclick="var d=this.closest('.nav-dd');document.querySelectorAll('.nav-dd.open').forEach(function(o){if(o!==d)o.classList.remove('open')});d.classList.toggle('open')"><span class="nav-dd-caret" aria-hidden="true"></span></button>
+                <div class="nav-dd-menu">
+                    <a href="/contents/page-00-publications.html" class="nav-link">pubs</a>
+                    <a href="/frameworks/index.html" class="nav-link">frameworks</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
