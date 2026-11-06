@@ -1,3 +1,14 @@
-<div style="line-height: 1.1; font-size: 0.8rem; white-space: pre; font-family: monospace; color: #444;">
-
+<div class="cardx-lf-top">
+    <br>
+    <strong>sub sub title</strong><br>
+    <!-- image slot: swap src for a published Google Drawing / diagram URL (w=400&h=300) -->
+    <img src="/logo_prsnt.png" 
+        style="width: 100%; height: auto; display: block; border-bottom: 1px solid #eee; opacity: 0.8;" 
+        alt="image placeholder">
+    <br>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum nulla sem, non mollis erat vulputate in. Sed posuere faucibus enim, at feugiat velit consequat non. Maecenas accumsan justo nulla, sed faucibus dolor pellentesque sed. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+</div>
+<div class="cardx-lf-btm">
+    <strong>sub sub title</strong><br>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum nulla sem, non mollis erat vulputate in. Sed posuere faucibus enim, at feugiat velit consequat non. Maecenas accumsan justo nulla, sed faucibus dolor pellentesque sed. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
 </div>

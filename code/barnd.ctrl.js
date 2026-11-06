@@ -40,9 +40,9 @@ function initBarndCarousel() {
 
     slider.addEventListener('mousemove', (e) => {
         if (!isDown) return;
-        isDragging = true; // User is moving, so they are dragging
         e.preventDefault();
         const x = e.pageX - slider.offsetLeft;
+        if (Math.abs(x - startX) > 5) isDragging = true; // more than 5px counts as a drag, so a slightly shaky click still opens the card
         const walk = (x - startX) * 2;
         slider.scrollLeft = scrollLeft - walk;
     });

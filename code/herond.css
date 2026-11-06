@@ -1,113 +1,60 @@
-/* code/herond.css */
+/*
+ * code/herond.css: hero slider, used by index.html through code/herond.html.
+ * Behaviour is in code/herond.ctrl.js (index.html starts it once the html is loaded).
+ * v0.05 cleanup: the slider was defined twice in this file, now one block with the same result.
+ */
 
-/* Hero Slider Core */
-.hr-viewport {
-    position: relative;
-    height: 300px;
-    overflow: hidden;
-    touch-action: pan-y;
-    user-select: none;
-}
-
-@media (min-width: 640px) {
-    .hr-viewport { height: 400px; }
-}
-
-.hr-track {
-    display: flex;
-    height: 100%;
-}
-
-.hr-item {
-    min-width: 100%;
-    flex: 0 0 100%;
-    height: 100%;
-}
-
-/* Slider Arrows */
-.slider-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.9);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 30;
-    cursor: pointer;
-    border: 1px solid #e2e8f0;
-    transition: all 0.2s;
-}
-
-.slider-arrow:hover { background: #fff; scale: 1.1; }
-.arrow-left { left: 1rem; }
-.arrow-right { right: 1rem; }
-
-/* Placeholder Slide Box */
-.sld-placeholder {
-    width: 100%;
-    height: 100%;
-    background-color: #f1f5f9; /* slate-100 */
-    border: 2px dashed #cbd5e1; /* slate-300 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-    font-size: 12px;
-    text-transform: lowercase;
-}
-
+/* 1. viewport and track */
 .hr-viewport {
     position: relative;
     width: 100%;
     height: 400px;
     overflow: hidden;
     background: #fff;
+    touch-action: pan-y;
+    user-select: none;
 }
 
 .hr-track {
     display: flex;
     height: 100%;
-    transition: transform 700ms cubic-bezier(0.2, 0, 0.2, 1);
+    transition: transform 700ms cubic-bezier(0.2, 0, 0.2, 1);   /* herond.ctrl.js sets its own transition while it moves */
 }
 
 .hr-item {
     min-width: 100%;
+    flex: 0 0 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Restoring Button Visibility */
+/* 2. arrows */
 .slider-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 50; /* Ensure it's above the slides */
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 9999px;
+    z-index: 50;   /* above the slides */
+    width: 40px;
+    height: 40px;
     padding: 10px;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 9999px;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
+.slider-arrow:hover { background: #f8fafc; scale: 1.05; }
 .arrow-left { left: 1.5rem; }
 .arrow-right { right: 1.5rem; }
 
-.slider-arrow:hover {
-    background: #f8fafc;
-    scale: 1.05;
-}
-
-/* Controller Positioning (Ctrl 01 & 02) */
+/* 3. labels and dots under the slides (built by herond.ctrl.js) */
 .hr-ctrl-container {
     position: absolute;
     bottom: 2rem;
@@ -126,7 +73,29 @@
     gap: 0.75rem;
 }
 
-/* Generic Box */
+/* the controller gives the labels and dots tailwind classes the template does not load, so they are styled here */
+#hero-labels button {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-family: var(--font-text);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: lowercase;
+    transition: all 0.3s;
+}
+#hero-bars button {
+    height: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+/* 4. placeholder slide box (the sld_0x boxes in code/herond.html; replace with your own slides) */
 .sld-box-generic {
     width: 100%;
     max-width: 480px;

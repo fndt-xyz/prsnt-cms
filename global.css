@@ -1,10 +1,20 @@
-/* 1. IMPORTS & VARIABLES */
+/*
+ * global.css: prsnt-cms template base, loaded first by every page.
+ * Keep it generic. A site built on the template puts its own look in a separate file
+ * loaded right after this one (e.g. code/site.css); a page's local.css only adds that page's blocks.
+ */
+
+/* 1. IMPORTS & FONT ROLES
+   Fonts are named by role. To change a font, change it here only; every other css file uses these roles,
+   never a family name. */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lato:wght@400;700&family=Open+Sans:wght@700;800&display=swap');
 
 :root {
-    --font-open-sans: 'Open Sans', sans-serif;
-    --font-inter: 'Inter', sans-serif;
-    --font-lato: 'Lato', sans-serif;
+    --font-head: 'Open Sans', sans-serif;      /* logo, menu, titles, headings */
+    --font-text: 'Inter', sans-serif;          /* body, buttons, labels, sidebar */
+    --font-body: 'Lato', 'Inter', sans-serif;  /* .view-content paragraphs */
+    --font-mono: monospace;                    /* breadcrumb, code */
+    --logo-h: 40px;                            /* navbar logo height, also used by the sticky navbar (section 3b) */
 }
 
 /* 2. BASE RESET */
@@ -12,7 +22,7 @@ body {
     margin: 0;
     background-color: #ffffff;
     color: #171717;
-    font-family: var(--font-inter);
+    font-family: var(--font-text);
     -webkit-font-smoothing: antialiased;
 }
 
@@ -51,27 +61,39 @@ img {
     }
 }
 
+/* 3b. STICKY NAVBAR
+   The navbar stays at the top while the page scrolls. On phones the navbar is two rows
+   (logo on top, menu under it): there the logo row scrolls away and only the menu row stays,
+   so the bar takes less of the screen. The negative top = navbar top padding + logo row
+   + half the gap above the menu. If you change those sizes, the calc follows --logo-h. */
+#navbar-placeholder {
+    position: sticky;
+    top: 0;
+    z-index: 100;   /* above the hero arrows and dots (z-index 50), so an open dropdown is never covered */
+}
+@media (max-width: 639px) {
+    #navbar-placeholder { top: calc(-1 * (1rem + var(--logo-h) + 0.5rem)); }
+}
+
 /* 4. LOGO & BRANDING */
 .logo-group {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    text-decoration: none;
 }
 
 a.logo-text {
-    font-family: var(--font-open-sans);
+    font-family: var(--font-head);
     font-weight: 800;
     font-size: 1.25rem;
     letter-spacing: -0.05em;
     color: #0f172a;
     text-transform: lowercase;
-    text-decoration: none !important;
     display: inline-block;
 }
 
 .logo-img {
-    height: 40px;
+    height: var(--logo-h);
     width: auto;
 }
 
@@ -79,9 +101,10 @@ a.logo-text {
 .nav-links-wrap {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;   /* home and the dropdown parents on one line */
     gap: 2rem;
     margin-top: 1rem;
-    font-family: var(--font-open-sans);
+    font-family: var(--font-head);
     font-size: 14px;
     text-transform: lowercase;
 }
@@ -91,7 +114,6 @@ a.logo-text {
 }
 
 .nav-link {
-    text-decoration: none;
     color: #1e293b;
     transition: color 0.2s;
 }
@@ -142,7 +164,7 @@ a.logo-text {
 }
 
 .view-title {
-    font-family: var(--font-open-sans);
+    font-family: var(--font-head);
     font-size: 18px;
     font-weight: 700;
     letter-spacing: -0.05em;
@@ -160,14 +182,23 @@ hr.title-sep {
 }
 
 .view-content {
-    font-family: var(--font-lato);
+    font-family: var(--font-body);
     font-size: 14px;
     line-height: 1.625;
     color: #334155;
     text-align: justify;
 }
 
-/* 8. LINKS INSIDE BODY TEXT */
+/* 8. LINKS
+   A link with no class looks like normal text: same colour, no underline; the pointer shows it is a link.
+   Opt in to a visible style with a class on the link (or on a block around links):
+     class="lnk-bold"  bold, same colour as the text
+     class="lnk-line"  underlined, same colour as the text */
+a { color: inherit; text-decoration: none; }
+a.lnk-bold, .lnk-bold a { font-weight: 700; }
+a.lnk-line, .lnk-line a, .view-content a.lnk-line, .view-content .lnk-line a { text-decoration: underline !important; text-underline-offset: 3px; }
+
+/* 8b. LINKS INSIDE BODY TEXT */
 .view-content a {
     color: inherit !important;
     text-decoration: none !important;
@@ -189,7 +220,7 @@ hr.title-sep {
 }
 
 .right-col-link-h2 {
-    font-family: var(--font-open-sans);
+    font-family: var(--font-head);
     font-size: 11px;
     font-weight: bold;
     color: #94a3b8;
@@ -199,10 +230,9 @@ hr.title-sep {
 
 .right-col-links a {
     padding: 1rem;
-    font-family: var(--font-inter);
+    font-family: var(--font-text);
     font-size: 14px;
-    text-decoration: none !important;
-    color: #475569 !important;      
+    color: #475569 !important;
     border-bottom: 1px solid #f8fafc;
     text-transform: lowercase;
 }
@@ -253,7 +283,7 @@ hr.title-sep {
     color: #666;
     margin-top: 0;
     margin-bottom: 24px;
-    font-family: monospace;
+    font-family: var(--font-mono);
     display: block;
 }
 
@@ -262,7 +292,6 @@ hr.title-sep {
 
 .breadcrumb a {
     color: #2563eb;
-    text-decoration: none;
 }
 
 .breadcrumb .current {
@@ -282,10 +311,6 @@ hr.title-sep {
     }
 }
 
-footer a {
-    text-decoration: none !important;
-}
-
 footer .logo-text {
     font-size: 14px !important;
 }
@@ -293,7 +318,8 @@ footer .logo-text {
 /* 12. NAV DROPDOWN (parent link + triangle, plain css)
    The child menu always floats below its parent (desktop and phone), so opening it
    never pushes the other menu items around. Desktop opens on hover, touch screens
-   open by tapping the triangle. */
+   open by tapping the triangle. A menu opened by a tap or click closes when you tap
+   anywhere else or press Esc (the small onclick in elements/navbar.html and footer.html). */
 :root { --nav-dd-gap: 12px; }   /* space between a parent link and its child menu */
 
 .nav-dd {
@@ -351,8 +377,13 @@ footer .logo-text {
 .nav-dd.open .nav-dd-caret { transform: rotate(180deg); }
 @media (hover: hover) {
     .nav-dd:hover .nav-dd-menu,
-    .nav-dd:focus-within .nav-dd-menu { display: flex; }
+    .nav-dd:has(:focus-visible) .nav-dd-menu { display: flex; }   /* keyboard only: a mouse click does not keep it open */
     .nav-dd:hover .nav-dd-caret { transform: rotate(180deg); }
+
+    /* hover wins: while one dropdown is hovered, a menu opened earlier by click stays hidden,
+       so two menus never show at once */
+    .nav-links-wrap:has(.nav-dd:hover) .nav-dd.open:not(:hover) .nav-dd-menu { display: none; }
+    .nav-links-wrap:has(.nav-dd:hover) .nav-dd.open:not(:hover) .nav-dd-caret { transform: none; }
 
     /* invisible bridges over the gap, so the menu stays open while the mouse moves down:
        one under the parent, one along the full top edge of the open menu */
@@ -383,6 +414,7 @@ footer .logo-text {
     .nav-dd-toggle { padding: 10px 8px; }   /* bigger tap target for the triangle */
     .nav-dd-menu {
         left: -0.5rem;
+        top: calc(100% - 8px);   /* the bigger triangle tap target already adds space under the word */
         min-width: 150px;
     }
     .nav-dd-menu .nav-link {
@@ -392,7 +424,8 @@ footer .logo-text {
 }
 
 /* 13. FOOTER DROPUP (round button that opens a small menu upward, plain css)
-   Tap or click the button to open or close it. Ported from 2nd.fndt. */
+   Tap or click the button to open or close it; tap anywhere else or press Esc to close.
+   Opening it closes any open navbar dropdown, and the other way round. Ported from 2nd.fndt. */
 .dropup {
     position: relative;
     display: inline-block;
@@ -447,7 +480,7 @@ footer .logo-text {
 .dropup-menu a {
     display: block;
     padding: 10px 16px;
-    font-family: var(--font-inter);
+    font-family: var(--font-text);
     font-size: 12px;
     font-weight: 700;
     color: #475569;

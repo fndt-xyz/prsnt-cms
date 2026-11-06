@@ -11,9 +11,10 @@
             <a href="/index.html" class="nav-link">home</a>
 
             <!-- dropdown: parent link + triangle. desktop: hover. phone: tap the triangle (the word still opens the parent page).
-                 to add a dropdown: copy one whole <div class="nav-dd"> block. to remove it: keep only the <a> parent link. -->
+                 to add a dropdown: copy one whole <div class="nav-dd"> block. to remove it: keep only the <a> parent link.
+                 one menu open at a time; tap anywhere else or press Esc to close it (the first tap sets this up, no js file needed) -->
             <div class="nav-dd">
-                <a href="/elements/all-pages.html" class="nav-link nav-dd-parent">all-pages</a><button type="button" class="nav-dd-toggle" aria-label="open submenu" onclick="var d=this.closest('.nav-dd');document.querySelectorAll('.nav-dd.open').forEach(function(o){if(o!==d)o.classList.remove('open')});d.classList.toggle('open')"><span class="nav-dd-caret" aria-hidden="true"></span></button>
+                <a href="/elements/all-pages.html" class="nav-link nav-dd-parent">all-pages</a><button type="button" class="nav-dd-toggle" aria-label="open submenu" onclick="var d=this.closest('.nav-dd');document.querySelectorAll('.nav-dd.open,.dropup.open').forEach(function(o){if(o!==d)o.classList.remove('open')});d.classList.toggle('open');if(!window.prsntMenus){window.prsntMenus=1;var c=function(){document.querySelectorAll('.nav-dd.open,.dropup.open').forEach(function(o){o.classList.remove('open')})};document.addEventListener('click',function(e){if(!e.target.closest('.nav-dd,.dropup'))c()});document.addEventListener('keydown',function(e){if(e.key==='Escape')c()})}"><span class="nav-dd-caret" aria-hidden="true"></span></button>
                 <div class="nav-dd-menu">
                     <a href="/contents/page-00-00-example.html" class="nav-link">example</a>
                     <a href="/contents/page-00-01-flow-exmp.html" class="nav-link">flow example</a>
@@ -22,7 +23,7 @@
             </div>
 
             <div class="nav-dd">
-                <a href="/elements/about.html" class="nav-link nav-dd-parent">about</a><button type="button" class="nav-dd-toggle" aria-label="open submenu" onclick="var d=this.closest('.nav-dd');document.querySelectorAll('.nav-dd.open').forEach(function(o){if(o!==d)o.classList.remove('open')});d.classList.toggle('open')"><span class="nav-dd-caret" aria-hidden="true"></span></button>
+                <a href="/elements/about.html" class="nav-link nav-dd-parent">about</a><button type="button" class="nav-dd-toggle" aria-label="open submenu" onclick="var d=this.closest('.nav-dd');document.querySelectorAll('.nav-dd.open,.dropup.open').forEach(function(o){if(o!==d)o.classList.remove('open')});d.classList.toggle('open');if(!window.prsntMenus){window.prsntMenus=1;var c=function(){document.querySelectorAll('.nav-dd.open,.dropup.open').forEach(function(o){o.classList.remove('open')})};document.addEventListener('click',function(e){if(!e.target.closest('.nav-dd,.dropup'))c()});document.addEventListener('keydown',function(e){if(e.key==='Escape')c()})}"><span class="nav-dd-caret" aria-hidden="true"></span></button>
                 <div class="nav-dd-menu">
                     <a href="/contents/page-00-publications.html" class="nav-link">pubs</a>
                     <a href="/frameworks/index.html" class="nav-link">frameworks</a>

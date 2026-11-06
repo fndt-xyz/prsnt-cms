@@ -161,7 +161,17 @@
     background: #fff;
 }
 
+/* the button of the card on screen */
+.cardx-buttons button.on, .cardx-summary button.on {
+    border-color: #171717;
+    color: #ffffff;
+    background: #171717;
+}
+
 /* 5. SIDEBAR & UTILITY */
+/* the slide you are on, in the contents list */
+.right-col-links a.here { color: #171717 !important; font-weight: 700; }   /* !important: global.css sets the sidebar link colour !important */
+
 .right-col {
     display: flex;
     flex-direction: column;

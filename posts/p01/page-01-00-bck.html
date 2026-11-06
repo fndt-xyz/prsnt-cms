@@ -54,20 +54,22 @@
                             </div>
 
                             <div class="cardx-col">
-                                <div id="cardx-display" class="cardx-rg-top">
+                                <!-- data-first: this card loads by itself when the slide opens (no need to copy it here).
+                                     what is written inside only shows if that card file is missing -->
+                                <div id="cardx-display" class="cardx-rg-top" data-first="aa" aria-live="polite">
                                     <p>[select card below]</p>
                                 </div>
                                 <div class="cardx-rg-btm">
                                    <div class="cardx-rg-bttn">
 									   <div class="cardx-buttons">
-											<button onclick="loadCard('aa')">01</button>
-											<button onclick="loadCard('bb')">02</button>
-											<button onclick="loadCard('cc')">03</button>
-											<button onclick="loadCard('dd')">04</button>
+											<button onclick="loadCard('aa', this)">01</button>
+											<button onclick="loadCard('bb', this)">02</button>
+											<button onclick="loadCard('cc', this)">03</button>
+											<button onclick="loadCard('dd', this)">04</button>
                                         </div>
                                     </div>
                                     <div class="cardx-summary">
-                                        <button onclick="loadCard('ee')">---</button>
+                                        <button onclick="loadCard('ee', this)">---</button>
                                     </div>
                                 </div>
                             </div>
@@ -108,15 +110,30 @@
         }
         updateTimestamp();
         
-        async function loadCard(suffix) {
+        /* Card helpers
+           cardVersion: on localhost every card is fetched fresh (edit a .txt, reload, see it);
+                        on vercel the browser may cache the cards, so slides open faster.
+           markOn:      highlights the button of the card on screen (class "on", local.css section 4).
+           data-first:  a display zone with data-first="aa" loads that card when the slide opens. */
+        function cardVersion() {
+            const local = ['localhost', '127.0.0.1'].includes(location.hostname);
+            return local ? `?v=${Date.now()}` : '';
+        }
+        function markOn(zone, btn) {
+            const col = zone.closest('.cardx-col');
+            if (!col) return;
+            col.querySelectorAll('.cardx-buttons button, .cardx-summary button').forEach(b => b.classList.toggle('on', b === btn));
+        }
+
+        async function loadCard(suffix, btn) {
             const displayZone = document.getElementById('cardx-display');
-            const timestamp = new Date().getTime();
-            const fileName = `page-01-01-${suffix}.txt?v=${timestamp}`;
+            const fileName = `page-01-01-${suffix}.txt` + cardVersion();
             
             try {
                 const response = await fetch(fileName);
                 if (response.ok) {
                     displayZone.innerHTML = await response.text();
+                    markOn(displayZone, btn);
                 }
             } catch (error) { console.error("fetch error:", error); }
         }
@@ -129,6 +146,10 @@
                 const response = await fetch(path);
                 if (response.ok) {
                     element.innerHTML = await response.text();
+                    /* mark the current slide in the contents list (class "here", local.css section 5) */
+                    element.querySelectorAll('a').forEach(a => {
+                        if (a.getAttribute('href') === location.pathname.split('/').pop()) a.classList.add('here');
+                    });
                 }
             } catch (error) { console.error("load failure:", file, error); }
         }
@@ -138,6 +159,13 @@
             loadComponent('footer-placeholder', 'elements/footer.html', true);
             loadComponent('sidebar-placeholder-tp', 'rght-clmn-b-tp.html');
             loadComponent('sidebar-placeholder-bt', 'rght-clmn-b-bt.html');
+
+            /* first cards: every zone with data-first loads that card, its button lit */
+            document.querySelectorAll('[data-first]').forEach(zone => {
+                const load = zone.id === 'pard-display-zone' ? loadPard : loadCard;
+                const btn = zone.closest('.cardx-col').querySelector(`button[onclick*="'${zone.dataset.first}'"]`);
+                load(zone.dataset.first, btn);
+            });
         });
     </script>
 </body>

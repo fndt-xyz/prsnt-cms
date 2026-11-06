@@ -1,3 +1,10 @@
-<div style="line-height: 1.1; font-size: 0.8rem; white-space: pre; font-family: monospace; color: #444;">
-
+<div class="cardx-lf-top">
+    <br>
+    <strong>sub sub title</strong><br>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum nulla sem, non mollis erat vulputate in. Sed posuere faucibus enim, at feugiat velit consequat non. Maecenas accumsan justo nulla, sed faucibus dolor pellentesque sed. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+    <br>
+</div>
+<div class="cardx-lf-btm">
+    <strong>sub sub title</strong><br>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum nulla sem, non mollis erat vulputate in. Sed posuere faucibus enim, at feugiat velit consequat non. Maecenas accumsan justo nulla, sed faucibus dolor pellentesque sed. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
 </div>

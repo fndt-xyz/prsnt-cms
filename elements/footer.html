@@ -22,9 +22,9 @@
                 </svg>
             </a>
 
-            <!-- dropup menu: tap the round button to open or close it (styles: global.css section 13) -->
+            <!-- dropup menu: tap the round button to open or close it, tap anywhere else or press Esc to close (styles: global.css section 13) -->
             <div class="dropup">
-                <button type="button" class="dropup-trigger" aria-label="menu" onclick="this.parentNode.classList.toggle('open')">
+                <button type="button" class="dropup-trigger" aria-label="menu" onclick="var d=this.parentNode;document.querySelectorAll('.nav-dd.open,.dropup.open').forEach(function(o){if(o!==d)o.classList.remove('open')});d.classList.toggle('open');if(!window.prsntMenus){window.prsntMenus=1;var c=function(){document.querySelectorAll('.nav-dd.open,.dropup.open').forEach(function(o){o.classList.remove('open')})};document.addEventListener('click',function(e){if(!e.target.closest('.nav-dd,.dropup'))c()});document.addEventListener('keydown',function(e){if(e.key==='Escape')c()})}">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>
                     </svg>
